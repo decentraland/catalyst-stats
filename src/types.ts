@@ -1,12 +1,14 @@
-import type { IFetchComponent } from "@well-known-components/http-server"
+import type { IFetchComponent } from '@well-known-components/http-server'
 import type {
   IConfigComponent,
   ILoggerComponent,
   IHttpServerComponent,
   IBaseComponent,
-  IMetricsComponent,
-} from "@well-known-components/interfaces"
-import { metricDeclarations } from "./metrics"
+  IMetricsComponent
+} from '@well-known-components/interfaces'
+import { metricDeclarations } from './metrics'
+import { INatsComponent } from '@well-known-components/nats-component/dist/types'
+import { ICommStatsComponent } from './ports/comms-stats'
 
 export type GlobalContext = {
   components: BaseComponents
@@ -19,6 +21,8 @@ export type BaseComponents = {
   server: IHttpServerComponent<GlobalContext>
   fetch: IFetchComponent
   metrics: IMetricsComponent<keyof typeof metricDeclarations>
+  nats: INatsComponent
+  commsStats: ICommStatsComponent
 }
 
 // components used in runtime
