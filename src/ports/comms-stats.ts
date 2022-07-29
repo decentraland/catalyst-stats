@@ -17,7 +17,7 @@ type ParcelInfo = {
   }
 }
 export type ICommStatsComponent = IBaseComponent & {
-  start: () => Promise<void>
+  init: () => Promise<void>
   getParcels: () => Promise<ParcelInfo[]>
 }
 
@@ -35,7 +35,7 @@ export async function createCommsStatsComponent(
 
   const peers = new Map<string, PeerInfo>()
 
-  async function start(): Promise<void> {
+  async function init(): Promise<void> {
     const disconnectSubscription = nats.subscribe('peer.*.disconnect')
     ;(async () => {
       for await (const message of disconnectSubscription.generator) {
@@ -80,7 +80,7 @@ export async function createCommsStatsComponent(
   }
 
   return {
-    start,
+    init,
     getParcels
   }
 }

@@ -20,4 +20,11 @@ export async function main(program: Lifecycle.EntryPointParameters<AppComponents
 
   // start ports: db, listeners, synchronizations, etc
   await startComponents()
+
+  for (const c in components) {
+    const component = (components as Record<string, any>)[c]
+    if (component.init && typeof component.init == 'function') {
+      await component.init()
+    }
+  }
 }
