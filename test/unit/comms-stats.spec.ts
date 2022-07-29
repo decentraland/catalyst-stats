@@ -15,7 +15,7 @@ describe('comms-stats component', () => {
       const config = createConfigComponent({})
       const nats = await createLocalNatsComponent({ config, logs })
       const stats = await createCommsStatsComponent({ logs, nats, config })
-      await stats.start()
+      await stats.init()
 
       nats.publish(
         'client-proto.peer.peer1.heartbeat',
@@ -75,7 +75,7 @@ describe('comms-stats component', () => {
       })
       const nats = await createLocalNatsComponent({ config, logs })
       const stats = await createCommsStatsComponent({ logs, nats, config })
-      await stats.start()
+      await stats.init()
 
       nats.publish(
         'client-proto.peer.peer1.heartbeat',

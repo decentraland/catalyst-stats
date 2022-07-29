@@ -23,7 +23,7 @@ export async function main(program: Lifecycle.EntryPointParameters<AppComponents
 
   for (const c in components) {
     const component = (components as Record<string, any>)[c]
-    if (component.init && typeof component.init == 'function') {
+    if (component.init && typeof component.init === 'function') {
       await component.init()
     }
   }
