@@ -11,7 +11,7 @@ function delay(ms: number) {
 describe('comms-stats component', () => {
   describe('getParcels', () => {
     it('should listener to heartbeats', async () => {
-      const logs = createLogComponent({})
+      const logs = await createLogComponent({})
       const config = createConfigComponent({})
       const nats = await createLocalNatsComponent({ config, logs })
       const stats = await createCommsStatsComponent({ logs, nats, config })
@@ -69,7 +69,7 @@ describe('comms-stats component', () => {
     })
 
     it('should expire peer information', async () => {
-      const logs = createLogComponent({})
+      const logs = await createLogComponent({})
       const config = createConfigComponent({
         PEER_EXPIRATION_TIME: '1'
       })

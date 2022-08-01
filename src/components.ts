@@ -12,7 +12,7 @@ import { createCommsStatsComponent } from './ports/comms-stats'
 export async function initComponents(): Promise<AppComponents> {
   const config = await createDotEnvConfigComponent({ path: ['.env.default', '.env'] })
 
-  const logs = createLogComponent({})
+  const logs = await createLogComponent({})
   const server = await createServerComponent<GlobalContext>({ config, logs }, {})
   const statusChecks = await createStatusCheckComponent({ server, config })
   const fetch = await createFetchComponent()
