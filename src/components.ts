@@ -18,7 +18,7 @@ export async function initComponents(): Promise<AppComponents> {
   const fetch = await createFetchComponent()
   const metrics = await createMetricsComponent(metricDeclarations, { server, config })
   const nats = await createNatsComponent({ config, logs })
-  const commsStats = await createCommsStatsComponent({ config, nats, logs })
+  const commsStats = await createCommsStatsComponent({ nats, logs })
 
   return {
     config,

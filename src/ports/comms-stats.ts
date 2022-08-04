@@ -1,39 +1,39 @@
 import { IBaseComponent } from '@well-known-components/interfaces'
 import { BaseComponents } from '../types'
-import { HeartbeatMessage } from '../proto/archipelago.gen'
+import { HeartbeatMessage, IslandStatusMessage } from '../proto/archipelago.gen'
 import { Reader } from 'protobufjs/minimal'
 
-type PeerInfo = {
+export type PeerData = {
   time: number
+  address: string
   x: number
+  y: number
   z: number
 }
 
-type ParcelInfo = {
-  peersCount: number
-  parcel: {
-    x: number
-    y: number
-  }
+export type IslandData = {
+  id: string
+  peers: string[]
+  maxPeers: number
+  center: [number, number, number]
+  radius: number
 }
+
 export type ICommStatsComponent = IBaseComponent & {
   init: () => Promise<void>
-  getParcels: () => Promise<ParcelInfo[]>
+  getPeers: () => Map<string, PeerData>
+  getIslands: () => IslandData[]
 }
 
-const PARCEL_SIZE = 16
-const DEFAULT_PEER_EXPIRATION_TIME_MS = 1000 * 60 // 1 min
-
 export async function createCommsStatsComponent(
-  components: Pick<BaseComponents, 'logs' | 'nats' | 'config'>
+  components: Pick<BaseComponents, 'logs' | 'nats'>
 ): Promise<ICommStatsComponent> {
-  const { nats, logs, config } = components
-
-  const peerExpirationTimeMs = (await config.getNumber('PEER_EXPIRATION_TIME')) || DEFAULT_PEER_EXPIRATION_TIME_MS
+  const { nats, logs } = components
 
   const logger = logs.getLogger('comm-stats-component')
 
-  const peers = new Map<string, PeerInfo>()
+  const peers = new Map<string, PeerData>()
+  let islands: IslandData[] = []
 
   async function init(): Promise<void> {
     const disconnectSubscription = nats.subscribe('peer.*.disconnect')
@@ -51,36 +51,35 @@ export async function createCommsStatsComponent(
         const decodedMessage = HeartbeatMessage.decode(Reader.create(message.data))
         const position = decodedMessage.position!
         peers.set(id, {
+          address: id,
           time: Date.now(),
-          x: position.x,
-          z: position.z
+          ...position
         })
+      }
+    })().catch((err: any) => logger.error(`error processing subscription message; ${err.message}`))
+
+    const islandsSubscription = nats.subscribe('archipelago.islands')
+    ;(async () => {
+      for await (const message of islandsSubscription.generator) {
+        const decodedMessage = IslandStatusMessage.decode(Reader.create(message.data))
+        const report: IslandData[] = []
+        for (const { id, peers, maxPeers, center, radius } of decodedMessage.data) {
+          report.push({
+            id,
+            peers,
+            maxPeers,
+            radius,
+            center: [center!.x, center!.y, center!.z]
+          })
+        }
+        islands = report
       }
     })().catch((err: any) => logger.error(`error processing subscription message; ${err.message}`))
   }
 
-  async function getParcels(): Promise<ParcelInfo[]> {
-    const countPerParcel = new Map<string, ParcelInfo>()
-    for (const [id, { time, x, z }] of peers) {
-      if (Date.now() - time > peerExpirationTimeMs) {
-        peers.delete(id)
-        continue
-      }
-
-      const parcelX = Math.floor(x / PARCEL_SIZE)
-      const parcelY = Math.floor(z / PARCEL_SIZE)
-
-      const key = `${parcelX}:${parcelY}`
-      const info = countPerParcel.get(key) || { peersCount: 0, parcel: { x: parcelX, y: parcelY } }
-      info.peersCount += 1
-      countPerParcel.set(key, info)
-    }
-
-    return Array.from(countPerParcel.values())
-  }
-
   return {
     init,
-    getParcels
+    getPeers: () => peers,
+    getIslands: () => islands
   }
 }

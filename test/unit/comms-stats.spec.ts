@@ -2,96 +2,120 @@ import { createConfigComponent } from '@well-known-components/env-config-provide
 import { createLogComponent } from '@well-known-components/logger'
 import { createLocalNatsComponent } from '@well-known-components/nats-component'
 import { createCommsStatsComponent } from '../../src/ports/comms-stats'
-import { HeartbeatMessage } from '../../src/proto/archipelago.gen'
+import { HeartbeatMessage, IslandData, IslandStatusMessage } from '../../src/proto/archipelago.gen'
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 describe('comms-stats component', () => {
-  describe('getParcels', () => {
-    it('should listener to heartbeats', async () => {
-      const logs = await createLogComponent({})
-      const config = createConfigComponent({})
-      const nats = await createLocalNatsComponent({ config, logs })
-      const stats = await createCommsStatsComponent({ logs, nats, config })
-      await stats.init()
+  it('should build a list of peers using archipelago heartbeats', async () => {
+    const logs = await createLogComponent({})
+    const config = createConfigComponent({})
+    const nats = await createLocalNatsComponent({ config, logs })
+    const stats = await createCommsStatsComponent({ logs, nats })
+    await stats.init()
+    nats.publish(
+      'client-proto.peer.peer1.heartbeat',
+      HeartbeatMessage.encode({
+        position: {
+          x: 0,
+          y: 0,
+          z: 0
+        }
+      }).finish()
+    )
+    nats.publish(
+      'client-proto.peer.peer2.heartbeat',
+      HeartbeatMessage.encode({
+        position: {
+          x: 0,
+          y: 0,
+          z: 0
+        }
+      }).finish()
+    )
+    nats.publish(
+      'client-proto.peer.peer3.heartbeat',
+      HeartbeatMessage.encode({
+        position: {
+          x: 1600,
+          y: 0,
+          z: 1600
+        }
+      }).finish()
+    )
+    await delay(100)
+    const peers = await stats.getPeers()
+    expect(peers.size).toEqual(3)
 
-      nats.publish(
-        'client-proto.peer.peer1.heartbeat',
-        HeartbeatMessage.encode({
-          position: {
-            x: 0,
-            y: 0,
-            z: 0
-          }
-        }).finish()
-      )
+    expect(peers.has('peer1')).toEqual(true)
+    expect(peers.get('peer1').address).toEqual('peer1')
+    expect(peers.get('peer1').x).toEqual(0)
+    expect(peers.get('peer1').y).toEqual(0)
+    expect(peers.get('peer1').z).toEqual(0)
 
-      nats.publish(
-        'client-proto.peer.peer2.heartbeat',
-        HeartbeatMessage.encode({
-          position: {
-            x: 0,
-            y: 0,
-            z: 0
-          }
-        }).finish()
-      )
+    expect(peers.has('peer2')).toEqual(true)
+    expect(peers.get('peer2').address).toEqual('peer2')
+    expect(peers.get('peer2').x).toEqual(0)
+    expect(peers.get('peer2').y).toEqual(0)
+    expect(peers.get('peer2').z).toEqual(0)
 
-      nats.publish(
-        'client-proto.peer.peer3.heartbeat',
-        HeartbeatMessage.encode({
-          position: {
-            x: 1600,
-            y: 0,
-            z: 1600
-          }
-        }).finish()
-      )
+    expect(peers.has('peer3')).toEqual(true)
+    expect(peers.get('peer3').address).toEqual('peer3')
+    expect(peers.get('peer3').x).toEqual(1600)
+    expect(peers.get('peer3').y).toEqual(0)
+    expect(peers.get('peer3').z).toEqual(1600)
+  })
 
-      await delay(100)
+  it('should keep a list of islands based on archipelago island status', async () => {
+    const logs = await createLogComponent({})
+    const config = createConfigComponent({})
+    const nats = await createLocalNatsComponent({ config, logs })
+    const stats = await createCommsStatsComponent({ logs, nats })
+    await stats.init()
 
-      const parcels = await stats.getParcels()
-      expect(parcels).toHaveLength(2)
-      expect(parcels).toEqual(
-        expect.arrayContaining([
-          {
-            peersCount: 2,
-            parcel: { x: 0, y: 0 }
-          },
-          {
-            peersCount: 1,
-            parcel: { x: 100, y: 100 }
-          }
-        ])
-      )
-    })
+    const i1: IslandData = {
+      id: 'I1',
+      peers: ['peer1', 'peer2'],
+      maxPeers: 100,
+      center: { x: 10, y: 10, z: 10 },
+      radius: 10
+    }
 
-    it('should expire peer information', async () => {
-      const logs = await createLogComponent({})
-      const config = createConfigComponent({
-        PEER_EXPIRATION_TIME: '1'
-      })
-      const nats = await createLocalNatsComponent({ config, logs })
-      const stats = await createCommsStatsComponent({ logs, nats, config })
-      await stats.init()
+    const i2: IslandData = {
+      id: 'I2',
+      peers: ['peer3', 'peer4'],
+      maxPeers: 100,
+      center: { x: 10, y: 10, z: 10 },
+      radius: 10
+    }
 
-      nats.publish(
-        'client-proto.peer.peer1.heartbeat',
-        HeartbeatMessage.encode({
-          position: {
-            x: 0,
-            y: 0,
-            z: 0
-          }
-        }).finish()
-      )
-
-      await delay(100)
-
-      const parcels = await stats.getParcels()
-      expect(parcels).toHaveLength(0)
-    })
+    nats.publish(
+      'archipelago.islands',
+      IslandStatusMessage.encode({
+        data: [i1, i2]
+      }).finish()
+    )
+    await delay(100)
+    const islands = await stats.getIslands()
+    expect(islands).toEqual(
+      expect.arrayContaining([
+        {
+          id: 'I1',
+          peers: ['peer1', 'peer2'],
+          maxPeers: 100,
+          center: [10, 10, 10],
+          radius: 10
+        },
+        {
+          id: 'I2',
+          peers: ['peer3', 'peer4'],
+          maxPeers: 100,
+          center: [10, 10, 10],
+          radius: 10
+        }
+      ])
+    )
   })
 })

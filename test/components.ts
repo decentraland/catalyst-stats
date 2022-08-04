@@ -28,7 +28,8 @@ async function initComponents(): Promise<TestComponents> {
   const nats = await createLocalNatsComponent({ config, logs })
   const commsStats = {
     init: () => Promise.resolve(undefined),
-    getParcels: () => Promise.resolve([])
+    getPeers: () => new Map(),
+    getIslands: () => []
   }
 
   return {
