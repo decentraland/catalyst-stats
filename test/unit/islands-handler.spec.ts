@@ -67,15 +67,8 @@ describe('islands-controller-unit', () => {
               id: peer1.address,
               address: peer1.address,
               lastPing: now,
-              parcel: {
-                x: 0,
-                y: 0
-              },
-              position: {
-                x: peer1.x,
-                y: peer1.y,
-                z: peer1.z
-              }
+              parcel: [0, 0],
+              position: [peer1.x, peer1.y, peer1.z]
             }
           ],
           maxPeers: 100,
@@ -89,29 +82,15 @@ describe('islands-controller-unit', () => {
               id: peer2.address,
               address: peer2.address,
               lastPing: now,
-              parcel: {
-                x: 100,
-                y: 100
-              },
-              position: {
-                x: peer2.x,
-                y: peer2.y,
-                z: peer2.z
-              }
+              parcel: [100, 100],
+              position: [peer2.x, peer2.y, peer2.z]
             },
             {
               id: peer3.address,
               address: peer3.address,
               lastPing: now,
-              parcel: {
-                x: 100,
-                y: 100
-              },
-              position: {
-                x: peer3.x,
-                y: peer3.y,
-                z: peer3.z
-              }
+              parcel: [100, 100],
+              position: [peer3.x, peer3.y, peer3.z]
             }
           ],
           maxPeers: 100,
@@ -185,15 +164,8 @@ describe('island-controller-unit', () => {
           id: peer1.address,
           address: peer1.address,
           lastPing: now,
-          parcel: {
-            x: 0,
-            y: 0
-          },
-          position: {
-            x: peer1.x,
-            y: peer1.y,
-            z: peer1.z
-          }
+          parcel: [0, 0],
+          position: [peer1.x, peer1.y, peer1.z]
         }
       ],
       maxPeers: 100,

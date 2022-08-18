@@ -6,15 +6,8 @@ type PeerResult = {
   id: string
   address: string
   lastPing: number
-  parcel: {
-    x: number
-    y: number
-  }
-  position: {
-    x: number
-    y: number
-    z: number
-  }
+  parcel: [number, number]
+  position: [number, number, number]
 }
 
 type IslandResult = {
@@ -37,15 +30,8 @@ function processIsland(data: IslandData, peers: Map<string, PeerData>): IslandRe
         id: address,
         address: address,
         lastPing: time,
-        parcel: {
-          x: parcelX,
-          y: parcelY
-        },
-        position: {
-          x: x,
-          y: y,
-          z: z
-        }
+        parcel: [parcelX, parcelY],
+        position: [x, y, z]
       })
     }
   }
