@@ -5,19 +5,15 @@ type PeerResult = {
   id: string
   address: string
   lastPing: number
-  parcel: {
-    x: number
-    y: number
-  }
-  position: {
-    x: number
-    y: number
-    z: number
-  }
+  parcel: [number, number]
+  position: [number, number, number]
 }
 
 type Result = {
-  body: PeerResult[]
+  body: {
+    ok: boolean
+    peers: PeerResult[]
+  }
 }
 
 export async function peersHandler(
@@ -27,7 +23,7 @@ export async function peersHandler(
     components: { commsStats }
   } = context
 
-  const peers = await commsStats.getPeers()
+  const peers = commsStats.getPeers()
   const result: PeerResult[] = []
 
   for (const { address, time, x, y, z } of peers.values()) {
@@ -36,19 +32,12 @@ export async function peersHandler(
       id: address,
       address: address,
       lastPing: time,
-      parcel: {
-        x: parcelX,
-        y: parcelY
-      },
-      position: {
-        x: x,
-        y: y,
-        z: z
-      }
+      parcel: [parcelX, parcelY],
+      position: [x, y, z]
     })
   }
 
   return {
-    body: result
+    body: { ok: true, peers: result }
   }
 }
