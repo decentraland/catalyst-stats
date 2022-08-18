@@ -27,37 +27,26 @@ describe('peers-controller-unit', () => {
       getIslands: () => []
     }
 
-    const { body } = await peersHandler({ url, components: { commsStats } })
-    expect(body).toHaveLength(2)
-    expect(body).toEqual(
+    const {
+      body: { ok, peers }
+    } = await peersHandler({ url, components: { commsStats } })
+    expect(ok).toEqual(true)
+    expect(peers).toHaveLength(2)
+    expect(peers).toEqual(
       expect.arrayContaining([
         {
           id: '0x0001',
           address: '0x0001',
           lastPing: now,
-          parcel: {
-            x: 0,
-            y: 0
-          },
-          position: {
-            x: 0,
-            y: 0,
-            z: 0
-          }
+          parcel: [0, 0],
+          position: [0, 0, 0]
         },
         {
           id: '0x0002',
           address: '0x0002',
           lastPing: now,
-          parcel: {
-            x: 100,
-            y: 100
-          },
-          position: {
-            x: 1600,
-            y: 1,
-            z: 1600
-          }
+          parcel: [100, 100],
+          position: [1600, 1, 1600]
         }
       ])
     )
