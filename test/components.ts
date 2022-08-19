@@ -23,9 +23,9 @@ export const test = createRunner<TestComponents>({
 async function initComponents(): Promise<TestComponents> {
   const components = await originalInitComponents()
 
-  const { config, logs } = components
+  const { config } = components
 
-  const nats = await createLocalNatsComponent({ config, logs })
+  const nats = await createLocalNatsComponent()
   const commsStats = {
     init: () => Promise.resolve(undefined),
     getPeers: () => new Map(),
