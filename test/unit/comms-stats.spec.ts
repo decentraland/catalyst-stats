@@ -12,7 +12,7 @@ describe('comms-stats component', () => {
   it('should build a list of peers using archipelago heartbeats', async () => {
     const logs = await createLogComponent({})
     const config = createConfigComponent({})
-    const nats = await createLocalNatsComponent({ config, logs })
+    const nats = await createLocalNatsComponent()
     const stats = await createCommsStatsComponent({ logs, nats })
     await stats.init()
     nats.publish(
@@ -71,7 +71,7 @@ describe('comms-stats component', () => {
   it('should keep a list of islands based on archipelago island status', async () => {
     const logs = await createLogComponent({})
     const config = createConfigComponent({})
-    const nats = await createLocalNatsComponent({ config, logs })
+    const nats = await createLocalNatsComponent()
     const stats = await createCommsStatsComponent({ logs, nats })
     await stats.init()
 
