@@ -1,6 +1,10 @@
 import { Lifecycle } from '@well-known-components/interfaces'
+import { setupCatalystStatus } from './controllers/catalysts-status'
+import { setupCommsStatus } from './controllers/comms-status'
 import { setupRouter } from './controllers/routes'
 import { AppComponents, GlobalContext, TestComponents } from './types'
+
+const PARCELS_UPDATE_INTERVAL = 1000 * 60 // 1 min
 
 // this function wires the business logic (adapters & controllers) with the components (ports)
 export async function main(program: Lifecycle.EntryPointParameters<AppComponents | TestComponents>) {
@@ -21,10 +25,17 @@ export async function main(program: Lifecycle.EntryPointParameters<AppComponents
   // start ports: db, listeners, synchronizations, etc
   await startComponents()
 
-  for (const c in components) {
-    const component = (components as Record<string, any>)[c]
-    if (component.init && typeof component.init === 'function') {
-      await component.init()
+  const { logs } = components
+  setupCommsStatus(components)
+  const { updateParcels } = setupCatalystStatus(components)
+
+  await updateParcels()
+  const logger = logs.getLogger('update parcel interval')
+  setInterval(async () => {
+    try {
+      await updateParcels()
+    } catch (err: any) {
+      logger.error(err)
     }
-  }
+  }, PARCELS_UPDATE_INTERVAL)
 }

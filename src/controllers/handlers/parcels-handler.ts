@@ -16,13 +16,13 @@ type Result = {
 }
 
 export async function parcelsHandler(
-  context: Pick<HandlerContextWithPath<'commsStats', '/parcels'>, 'url' | 'components'>
+  context: Pick<HandlerContextWithPath<'stats', '/parcels'>, 'url' | 'components'>
 ): Promise<Result> {
   const {
-    components: { commsStats }
+    components: { stats }
   } = context
 
-  const peers = await commsStats.getPeers()
+  const peers = stats.getPeers()
 
   const countPerParcel = new Map<string, ParcelResult>()
   for (const { x, z } of peers.values()) {

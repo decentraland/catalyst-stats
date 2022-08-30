@@ -17,13 +17,13 @@ type Result = {
 }
 
 export async function peersHandler(
-  context: Pick<HandlerContextWithPath<'commsStats', '/peers'>, 'url' | 'components'>
+  context: Pick<HandlerContextWithPath<'stats', '/peers'>, 'url' | 'components'>
 ): Promise<Result> {
   const {
-    components: { commsStats }
+    components: { stats }
   } = context
 
-  const peers = commsStats.getPeers()
+  const peers = stats.getPeers()
   const result: PeerResult[] = []
 
   for (const { address, time, x, y, z } of peers.values()) {

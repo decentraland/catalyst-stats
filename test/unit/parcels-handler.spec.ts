@@ -1,40 +1,18 @@
 import { parcelsHandler } from '../../src/controllers/handlers/parcels-handler'
-import { PeerData } from '../../src/ports/comms-stats'
+import { createStatsComponent } from '../../src/ports/stats'
+import { PeerData } from '../../src/types'
 
 describe('parcels-controller-unit', () => {
   it('ok', async () => {
-    const peersData = new Map<string, PeerData>()
-    const now = Date.now()
-    peersData.set('0x0001', {
-      time: now,
-      address: '0x0001',
-      x: 0,
-      y: 0,
-      z: 0
-    })
-    peersData.set('0x0002', {
-      time: now,
-      address: '0x0002',
-      x: 1600,
-      y: 1,
-      z: 1600
-    })
-    peersData.set('0x0003', {
-      time: now,
-      address: '0x0003',
-      x: 1600,
-      y: 1,
-      z: 1600
-    })
-
     const url = new URL('https://localhost/parcels')
-    const commsStats = {
-      init: () => Promise.resolve(),
-      getPeers: () => peersData,
-      getIslands: () => []
-    }
+    const stats = createStatsComponent()
 
-    const { body } = await parcelsHandler({ url, components: { commsStats } })
+    const now = Date.now()
+    stats.onPeerUpdated('0x0001', { time: now, address: '0x0001', x: 0, y: 0, z: 0 })
+    stats.onPeerUpdated('0x0002', { time: now, address: '0x0002', x: 1600, y: 1, z: 1600 })
+    stats.onPeerUpdated('0x0003', { time: now, address: '0x0003', x: 1600, y: 1, z: 1600 })
+
+    const { body } = await parcelsHandler({ url, components: { stats } })
     expect(body.parcels).toHaveLength(2)
     expect(body.parcels).toEqual(
       expect.arrayContaining([

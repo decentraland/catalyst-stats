@@ -1,6 +1,5 @@
-import { HandlerContextWithPath } from '../../types'
+import { HandlerContextWithPath, PeerData, IslandData } from '../../types'
 import { toParcel } from '../../logic/utils'
-import { PeerData, IslandData } from '../../ports/comms-stats'
 
 type PeerResult = {
   id: string
@@ -46,7 +45,7 @@ function processIsland(data: IslandData, peers: Map<string, PeerData>): IslandRe
 }
 
 export async function islandsHandler(
-  context: Pick<HandlerContextWithPath<'commsStats', '/islands'>, 'url' | 'components'>
+  context: Pick<HandlerContextWithPath<'stats', '/islands'>, 'url' | 'components'>
 ): Promise<{
   body: {
     ok: boolean
@@ -54,11 +53,11 @@ export async function islandsHandler(
   }
 }> {
   const {
-    components: { commsStats }
+    components: { stats }
   } = context
 
-  const peers = commsStats.getPeers()
-  const islands = commsStats.getIslands().map((i) => processIsland(i, peers))
+  const peers = stats.getPeers()
+  const islands = stats.getIslands().map((i) => processIsland(i, peers))
   return {
     body: {
       ok: true,
@@ -68,14 +67,14 @@ export async function islandsHandler(
 }
 
 export async function islandHandler(
-  context: Pick<HandlerContextWithPath<'commsStats', '/islands/:id'>, 'url' | 'params' | 'components'>
+  context: Pick<HandlerContextWithPath<'stats', '/islands/:id'>, 'url' | 'params' | 'components'>
 ): Promise<{ body?: IslandResult; status: number }> {
   const {
-    components: { commsStats }
+    components: { stats }
   } = context
 
-  const peers = commsStats.getPeers()
-  const islands = commsStats.getIslands()
+  const peers = stats.getPeers()
+  const islands = stats.getIslands()
 
   const islandId = context.params.id
 
