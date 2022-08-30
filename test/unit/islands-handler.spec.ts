@@ -1,5 +1,6 @@
 import { islandsHandler, islandHandler } from '../../src/controllers/handlers/islands-handler'
-import { PeerData, IslandData } from '../../src/ports/comms-stats'
+import { createStatsComponent } from '../../src/ports/stats'
+import { PeerData, IslandData } from '../../src/types'
 
 describe('islands-controller-unit', () => {
   it('ok', async () => {
@@ -44,18 +45,13 @@ describe('islands-controller-unit', () => {
     ]
 
     const url = new URL('https://localhost/islands')
-    const commsStats = {
-      init: () => Promise.resolve(),
-      getPeers: () =>
-        new Map<string, PeerData>([
-          [peer1.address, peer1],
-          [peer2.address, peer2],
-          [peer3.address, peer3]
-        ]),
-      getIslands: () => islands
-    }
+    const stats = createStatsComponent()
+    stats.onPeerUpdated(peer1.address, peer1)
+    stats.onPeerUpdated(peer2.address, peer2)
+    stats.onPeerUpdated(peer3.address, peer3)
+    stats.onIslandsDataReceived(islands)
 
-    const { body } = await islandsHandler({ url, components: { commsStats } })
+    const { body } = await islandsHandler({ url, components: { stats } })
     expect(body.ok).toEqual(true)
     expect(body.islands).toHaveLength(2)
     expect(body.islands).toEqual(
@@ -145,18 +141,13 @@ describe('island-controller-unit', () => {
     ]
 
     const url = new URL('https://localhost/islands/I1')
-    const commsStats = {
-      init: () => Promise.resolve(),
-      getPeers: () =>
-        new Map<string, PeerData>([
-          [peer1.address, peer1],
-          [peer2.address, peer2],
-          [peer3.address, peer3]
-        ]),
-      getIslands: () => islands
-    }
+    const stats = createStatsComponent()
+    stats.onPeerUpdated(peer1.address, peer1)
+    stats.onPeerUpdated(peer2.address, peer2)
+    stats.onPeerUpdated(peer3.address, peer3)
+    stats.onIslandsDataReceived(islands)
 
-    const { body } = await islandHandler({ url, components: { commsStats }, params: { id: 'I1' } })
+    const { body } = await islandHandler({ url, components: { stats }, params: { id: 'I1' } })
     expect(body).toEqual({
       id: 'I1',
       peers: [

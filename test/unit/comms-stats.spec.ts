@@ -1,7 +1,7 @@
-import { createConfigComponent } from '@well-known-components/env-config-provider'
 import { createLogComponent } from '@well-known-components/logger'
 import { createLocalNatsComponent } from '@well-known-components/nats-component'
-import { createCommsStatsComponent } from '../../src/ports/comms-stats'
+import { setupCommsStatus } from '../../src/controllers/comms-status'
+import { createStatsComponent } from '../../src/ports/stats'
 import { HeartbeatMessage, IslandData, IslandStatusMessage } from '../../src/proto/archipelago.gen'
 
 function delay(ms: number) {
@@ -11,10 +11,11 @@ function delay(ms: number) {
 describe('comms-stats component', () => {
   it('should build a list of peers using archipelago heartbeats', async () => {
     const logs = await createLogComponent({})
-    const config = createConfigComponent({})
     const nats = await createLocalNatsComponent()
-    const stats = await createCommsStatsComponent({ logs, nats })
-    await stats.init()
+    const stats = createStatsComponent()
+
+    setupCommsStatus({ logs, nats, stats })
+
     nats.publish(
       'client-proto.peer.peer1.heartbeat',
       HeartbeatMessage.encode({
@@ -46,7 +47,7 @@ describe('comms-stats component', () => {
       }).finish()
     )
     await delay(100)
-    const peers = await stats.getPeers()
+    const peers = stats.getPeers()
     expect(peers.size).toEqual(3)
 
     expect(peers.has('peer1')).toEqual(true)
@@ -70,10 +71,10 @@ describe('comms-stats component', () => {
 
   it('should keep a list of islands based on archipelago island status', async () => {
     const logs = await createLogComponent({})
-    const config = createConfigComponent({})
     const nats = await createLocalNatsComponent()
-    const stats = await createCommsStatsComponent({ logs, nats })
-    await stats.init()
+    const stats = createStatsComponent()
+
+    setupCommsStatus({ logs, nats, stats })
 
     const i1: IslandData = {
       id: 'I1',
@@ -98,7 +99,7 @@ describe('comms-stats component', () => {
       }).finish()
     )
     await delay(100)
-    const islands = await stats.getIslands()
+    const islands = stats.getIslands()
     expect(islands).toEqual(
       expect.arrayContaining([
         {
