@@ -4,7 +4,7 @@ import { setupCommsStatus } from './controllers/comms-status'
 import { setupRouter } from './controllers/routes'
 import { AppComponents, GlobalContext, TestComponents } from './types'
 
-const PARCELS_UPDATE_INTERVAL = 1000 * 60 // 1 min
+const PARCELS_UPDATE_INTERVAL = 1000 * 60 * 2 // 2 min
 
 // this function wires the business logic (adapters & controllers) with the components (ports)
 export async function main(program: Lifecycle.EntryPointParameters<AppComponents | TestComponents>) {

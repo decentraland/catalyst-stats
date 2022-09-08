@@ -78,10 +78,8 @@ export function setupCatalystStatus(components: Pick<BaseComponents, 'logs' | 'f
       lastCatalystsStatusTime = Date.now()
     }
 
-    if (!lastParcels) {
-      lastParcels = await fetchParcels(lastCatalystsStatus)
-      lastParcelsTime = Date.now()
-    }
+    lastParcels = await fetchParcels(lastCatalystsStatus)
+    lastParcelsTime = Date.now()
 
     stats.onCatalystsParcelsInfo({ time: lastParcelsTime, info: lastParcels })
   }
