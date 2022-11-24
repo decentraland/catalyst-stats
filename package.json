@@ -32,7 +32,7 @@
   "dependencies": {
     "@dcl/catalyst-contracts": "^3.0.0",
     "@dcl/protocol": "^1.0.0-3524279049.commit-02b9080",
-    "@dcl/schemas": "^5.14.0",
+    "@dcl/schemas": "^5.29.0",
     "@well-known-components/env-config-provider": "^1.1.1",
     "@well-known-components/http-server": "^1.1.2",
     "@well-known-components/interfaces": "^1.1.3",
