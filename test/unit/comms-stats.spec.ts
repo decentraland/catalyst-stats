@@ -2,7 +2,8 @@ import { createLogComponent } from '@well-known-components/logger'
 import { createLocalNatsComponent } from '@well-known-components/nats-component'
 import { setupCommsStatus } from '../../src/controllers/comms-status'
 import { createStatsComponent } from '../../src/ports/stats'
-import { HeartbeatMessage, IslandData, IslandStatusMessage } from '../../src/proto/archipelago.gen'
+import { Heartbeat } from '../../src/proto/decentraland/bff/comms_director_service.gen'
+import { IslandStatusMessage, IslandData } from '../../src/proto/decentraland/kernel/comms/v3/archipelago.gen'
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -18,7 +19,7 @@ describe('comms-stats component', () => {
 
     nats.publish(
       'client-proto.peer.peer1.heartbeat',
-      HeartbeatMessage.encode({
+      Heartbeat.encode({
         position: {
           x: 0,
           y: 0,
@@ -28,7 +29,7 @@ describe('comms-stats component', () => {
     )
     nats.publish(
       'client-proto.peer.peer2.heartbeat',
-      HeartbeatMessage.encode({
+      Heartbeat.encode({
         position: {
           x: 0,
           y: 0,
@@ -38,7 +39,7 @@ describe('comms-stats component', () => {
     )
     nats.publish(
       'client-proto.peer.peer3.heartbeat',
-      HeartbeatMessage.encode({
+      Heartbeat.encode({
         position: {
           x: 1600,
           y: 0,

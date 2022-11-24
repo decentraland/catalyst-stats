@@ -1,6 +1,5 @@
 import { BaseComponents, IslandData } from '../types'
-import { IslandStatusMessage } from '../proto/archipelago.gen'
-import { Reader } from 'protobufjs/minimal'
+import { IslandStatusMessage } from '../proto/decentraland/kernel/comms/v3/archipelago.gen'
 import { Heartbeat } from '../proto/decentraland/bff/comms_director_service.gen'
 
 export function setupCommsStatus({ logs, nats, stats }: Pick<BaseComponents, 'logs' | 'nats' | 'stats'>) {
@@ -23,7 +22,7 @@ export function setupCommsStatus({ logs, nats, stats }: Pick<BaseComponents, 'lo
     }
 
     const id = message.subject.split('.')[2]
-    const decodedMessage = Heartbeat.decode(Reader.create(message.data))
+    const decodedMessage = Heartbeat.decode(message.data)
     const position = decodedMessage.position!
     stats.onPeerUpdated(id, {
       address: id,
@@ -38,7 +37,7 @@ export function setupCommsStatus({ logs, nats, stats }: Pick<BaseComponents, 'lo
       return
     }
 
-    const decodedMessage = IslandStatusMessage.decode(Reader.create(message.data))
+    const decodedMessage = IslandStatusMessage.decode(message.data)
     const report: IslandData[] = []
     for (const { id, peers, maxPeers, center, radius } of decodedMessage.data) {
       report.push({
