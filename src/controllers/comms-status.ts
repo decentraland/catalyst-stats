@@ -1,6 +1,7 @@
 import { BaseComponents, IslandData } from '../types'
-import { HeartbeatMessage, IslandStatusMessage } from '../proto/archipelago.gen'
+import { IslandStatusMessage } from '../proto/archipelago.gen'
 import { Reader } from 'protobufjs/minimal'
+import { Heartbeat } from '../proto/decentraland/bff/comms_director_service.gen'
 
 export function setupCommsStatus({ logs, nats, stats }: Pick<BaseComponents, 'logs' | 'nats' | 'stats'>) {
   const logger = logs.getLogger('comm-stats-controller')
@@ -22,7 +23,7 @@ export function setupCommsStatus({ logs, nats, stats }: Pick<BaseComponents, 'lo
     }
 
     const id = message.subject.split('.')[2]
-    const decodedMessage = HeartbeatMessage.decode(Reader.create(message.data))
+    const decodedMessage = Heartbeat.decode(Reader.create(message.data))
     const position = decodedMessage.position!
     stats.onPeerUpdated(id, {
       address: id,

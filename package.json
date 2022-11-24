@@ -7,6 +7,7 @@
   },
   "devDependencies": {
     "@dcl/eslint-config": "^1.0.6",
+    "@protobuf-ts/protoc": "^2.8.2",
     "@types/google-protobuf": "^3.15.6",
     "@types/node": "^18.6.1",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
@@ -25,8 +26,12 @@
     "trailingComma": "none",
     "tabWidth": 2
   },
+  "config": {
+    "protocVersion": "21.6"
+  },
   "dependencies": {
     "@dcl/catalyst-contracts": "^3.0.0",
+    "@dcl/protocol": "^1.0.0-3524279049.commit-02b9080",
     "@dcl/schemas": "^5.14.0",
     "@well-known-components/env-config-provider": "^1.1.1",
     "@well-known-components/http-server": "^1.1.2",
@@ -39,6 +44,6 @@
     "google-protobuf": "^3.20.1",
     "isomorphic-fetch": "^3.0.0",
     "protoc-gen-dcl": "^1.0.0-20220109214200.commit-f45e34a",
-    "ts-proto": "^1.120.0"
+    "ts-proto": "^1.133.0"
   }
 }

@@ -3,5 +3,5 @@ node_modules/
 **/.DS_Store
 coverage
 *.gen.ts
-protoc3/
 .env
+src/proto
