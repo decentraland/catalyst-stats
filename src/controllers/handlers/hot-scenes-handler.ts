@@ -80,10 +80,12 @@ export async function hotScenesHandler(
     const realms = new Map<string, RealmInfo>()
 
     for (const sceneParcel of scene.metadata?.scene.parcels) {
-      for (const { realmName, url, parcels, usersCount } of catalystsInfo) {
+      for (const { realmName, url, parcels } of catalystsInfo) {
+        let usersCount = 0
         if (parcels.has(sceneParcel)) {
           const usersInParcel = parcels.get(sceneParcel)!
           result.usersTotalCount += usersInParcel
+          usersCount += usersInParcel
 
           const userParcels: ParcelCoord[] = []
           const coord = getCoords(sceneParcel)

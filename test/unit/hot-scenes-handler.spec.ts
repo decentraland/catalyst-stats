@@ -101,7 +101,7 @@ describe('hot-scenes-handler-unit', () => {
       {
         serverName: 'catalyst-1',
         url: 'https://catalyst-1',
-        usersCount: 22,
+        usersCount: 10,
         userParcels: [
           [10, 10],
           [10, 10],
