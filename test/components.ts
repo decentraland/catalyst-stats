@@ -7,6 +7,8 @@ import { main } from '../src/service'
 import { TestComponents } from '../src/types'
 import { initComponents as originalInitComponents } from '../src/components'
 import { createLocalNatsComponent } from '@well-known-components/nats-component'
+import { createTestMetricsComponent } from '@well-known-components/metrics'
+import { metricDeclarations } from '../src/metrics'
 
 /**
  * Behaves like Jest "describe" function, used to describe a test for a
@@ -29,6 +31,7 @@ async function initComponents(): Promise<TestComponents> {
   return {
     ...components,
     nats,
+    metrics: createTestMetricsComponent(metricDeclarations),
     localFetch: await createLocalFetchCompoment(config)
   }
 }

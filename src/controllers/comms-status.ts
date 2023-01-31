@@ -1,6 +1,6 @@
 import { BaseComponents, IslandData } from '../types'
-import { IslandStatusMessage } from '../proto/decentraland/kernel/comms/v3/archipelago.gen'
-import { Heartbeat } from '../proto/decentraland/bff/comms_director_service.gen'
+import { Heartbeat } from '@dcl/protocol/out-js/decentraland/bff/comms_director_service.gen'
+import { IslandStatusMessage } from '@dcl/protocol/out-js/decentraland/kernel/comms/v3/archipelago.gen'
 
 export function setupCommsStatus({ logs, nats, stats }: Pick<BaseComponents, 'logs' | 'nats' | 'stats'>) {
   const logger = logs.getLogger('comm-stats-controller')

@@ -8,13 +8,12 @@ import {
 import { createLogComponent } from '@well-known-components/logger'
 import { createNatsComponent } from '@well-known-components/nats-component'
 import { createFetchComponent } from './ports/fetch'
-import { createMetricsComponent } from '@well-known-components/metrics'
+import { createMetricsComponent, instrumentHttpServerWithMetrics } from '@well-known-components/metrics'
 import { catalystRegistryForProvider } from '@dcl/catalyst-contracts'
 import { createContentComponent } from './ports/content'
 import { AppComponents, GlobalContext } from './types'
 import { metricDeclarations } from './metrics'
 import { createStatsComponent } from './ports/stats'
-import 'isomorphic-fetch'
 
 const DEFAULT_ETH_NETWORK = 'goerli'
 
@@ -38,15 +37,18 @@ export async function initComponents(): Promise<AppComponents> {
   const server = await createServerComponent<GlobalContext>({ config, logs }, serverOptions)
   const statusChecks = await createStatusCheckComponent({ server, config })
   const fetch = await createFetchComponent()
-  const metrics = await createMetricsComponent(metricDeclarations, { server, config })
+  const metrics = await createMetricsComponent(metricDeclarations, { config })
   const nats = await createNatsComponent({ config, logs })
   const ethereumProvider = new HTTPProvider(
-    `https://rpc.decentraland.org/${encodeURIComponent(ethNetwork)}?project=catalyst-stats`
+    `https://rpc.decentraland.org/${encodeURIComponent(ethNetwork)}?project=catalyst-stats`,
+    { fetch: fetch.fetch }
   )
 
   const contract = await catalystRegistryForProvider(ethereumProvider)
   const content = await createContentComponent({ config })
   const stats = createStatsComponent()
+
+  await instrumentHttpServerWithMetrics({ server, metrics, config })
   return {
     config,
     logs,

@@ -2,8 +2,8 @@ import { createLogComponent } from '@well-known-components/logger'
 import { createLocalNatsComponent } from '@well-known-components/nats-component'
 import { setupCommsStatus } from '../../src/controllers/comms-status'
 import { createStatsComponent } from '../../src/ports/stats'
-import { Heartbeat } from '../../src/proto/decentraland/bff/comms_director_service.gen'
-import { IslandStatusMessage, IslandData } from '../../src/proto/decentraland/kernel/comms/v3/archipelago.gen'
+import { Heartbeat } from '@dcl/protocol/out-js/decentraland/bff/comms_director_service.gen'
+import { IslandStatusMessage, IslandData } from '@dcl/protocol/out-js/decentraland/kernel/comms/v3/archipelago.gen'
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
