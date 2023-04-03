@@ -346,10 +346,10 @@
     ajv-errors "^3.0.0"
     ajv-keywords "^5.1.0"
 
-"@dcl/schemas@^6.4.2", "@dcl/schemas@^6.5.1":
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/@dcl/schemas/-/schemas-6.5.1.tgz#e72eb79565b577a757e9b8514396705a61789b9f"
-  integrity sha512-nP+d7XnrqR00vZXkCLYF14RFeVuLcLkEcyt/EbRq9U5/E2Ed7+LiuizKgRcT+cfcAizSSZAiZ/JAoxzktdsXqg==
+"@dcl/schemas@^6.14.0", "@dcl/schemas@^6.4.2":
+  version "6.14.0"
+  resolved "https://registry.yarnpkg.com/@dcl/schemas/-/schemas-6.14.0.tgz#ea530ecb5843190d4b5fffc066169ce66006c581"
+  integrity sha512-ZBzYwAJ6tOxYx1kF8pqr1Ybc99ww0UnGneVhKg6bXXIop6ItWuxXy15voU5ctcjtbG+/f327EquTkD4rBfi3Tg==
   dependencies:
     ajv "^8.11.0"
     ajv-errors "^3.0.0"
