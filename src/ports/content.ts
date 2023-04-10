@@ -1,4 +1,4 @@
-import { Entity, EntityType } from '@dcl/schemas'
+import { Entity } from '@dcl/schemas'
 import { ContentClient } from 'dcl-catalyst-client'
 import { IBaseComponent } from '@well-known-components/interfaces'
 import { BaseComponents } from '../types'
@@ -18,7 +18,7 @@ export async function createContentComponent(components: Pick<BaseComponents, 'c
     if (tiles.length === 0) {
       return Promise.resolve([])
     }
-    return contentClient.fetchEntitiesByPointers(EntityType.SCENE, tiles)
+    return contentClient.fetchEntitiesByPointers(tiles)
   }
 
   function calculateThumbnail(scene: Entity): string | undefined {
