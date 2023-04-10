@@ -1,6 +1,6 @@
 ARG RUN
 
-FROM node:lts as builderenv
+FROM node:lts-alpine as builderenv
 
 WORKDIR /app
 
@@ -28,7 +28,7 @@ RUN yarn install --prod --frozen-lockfile
 
 ########################## END OF BUILD STAGE ##########################
 
-FROM node:lts
+FROM node:lts-alpine
 
 # NODE_ENV is used to configure some runtime options, like JSON logger
 ENV NODE_ENV production
