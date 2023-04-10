@@ -4,10 +4,6 @@ FROM node:lts-alpine as builderenv
 
 WORKDIR /app
 
-# some packages require a build step
-RUN apt-get update
-RUN apt-get -y -qq install python-setuptools python-dev build-essential
-
 # We use Tini to handle signals and PID1 (https://github.com/krallin/tini, read why here https://github.com/krallin/tini/issues/8)
 ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
