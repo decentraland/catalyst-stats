@@ -337,15 +337,6 @@
   dependencies:
     ts-proto "^1.126.1"
 
-"@dcl/schemas@^5.5.0":
-  version "5.32.0"
-  resolved "https://registry.yarnpkg.com/@dcl/schemas/-/schemas-5.32.0.tgz#260884e5cfde135902e77d621edf446154983d85"
-  integrity sha512-irvdF66dQMqKfjYib9gINxgGTJWL3NAG2m8ujIctDiRnjpoPpzH2VCPjOj+IKpNjWbMth4XaGr1JO0sfJweseA==
-  dependencies:
-    ajv "^8.11.0"
-    ajv-errors "^3.0.0"
-    ajv-keywords "^5.1.0"
-
 "@dcl/schemas@^6.15.0", "@dcl/schemas@^6.4.2":
   version "6.15.0"
   resolved "https://registry.yarnpkg.com/@dcl/schemas/-/schemas-6.15.0.tgz#18887aa8ad64b26eec1144cdf44568ebdcc6224c"
@@ -1740,7 +1731,7 @@ cors@^2.8.5:
     object-assign "^4"
     vary "^1"
 
-cross-fetch@^3.1.4:
+cross-fetch@^3.1.4, cross-fetch@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
   integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
@@ -1787,16 +1778,17 @@ dataloader@^1.4.0:
   resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-1.4.0.tgz#bca11d867f5d3f1b9ed9f737bd15970c65dff5c8"
   integrity sha512-68s5jYdlvasItOJnCuI2Q9s4q98g0pCyL3HrcKJu8KNugUl8ahgmZYg38ysLTgQjjXX3H8CJLkAvWrclWfcalw==
 
-dcl-catalyst-client@^13.0.15:
-  version "13.0.15"
-  resolved "https://registry.yarnpkg.com/dcl-catalyst-client/-/dcl-catalyst-client-13.0.15.tgz#4f2834cd2982b37de917b06f44e49d179ae4c768"
-  integrity sha512-FhtisMYFb34ZLCLRgSrfNUaJQZqBnTeTWpxRkg43QSEenQhvTzJ42KvjJCxtONosnsLVs02rve12F3G4pDWSjg==
+dcl-catalyst-client@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/dcl-catalyst-client/-/dcl-catalyst-client-15.0.0.tgz#230edaa27444dde9f7f53cebf27667d5d5f59ec6"
+  integrity sha512-WG4jvgamR0g2g35SsjiHm4JD+ih2faeWotuXNjAsi82SMV48TeWThIDAVRnBWqBdWEZtXIGgUX6dMDOzFS6FPw==
   dependencies:
     "@dcl/catalyst-contracts" "^3.0.0"
     "@dcl/hashing" "^1.1.0"
-    "@dcl/schemas" "^5.5.0"
+    "@dcl/schemas" "^6.4.2"
     "@types/form-data" "^2.5.0"
     cookie "^0.5.0"
+    cross-fetch "^3.1.5"
     dcl-catalyst-commons "^9.0.6"
     form-data "^4.0.0"
 
