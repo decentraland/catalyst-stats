@@ -1,6 +1,5 @@
 import { BaseComponents, IslandData } from '../types'
-import { Heartbeat } from '@dcl/protocol/out-js/decentraland/bff/comms_director_service.gen'
-import { IslandStatusMessage } from '@dcl/protocol/out-js/decentraland/kernel/comms/v3/archipelago.gen'
+import { Heartbeat, IslandStatusMessage } from '@dcl/protocol/out-js/decentraland/kernel/comms/v3/archipelago.gen'
 
 export function setupCommsStatus({ logs, nats, stats }: Pick<BaseComponents, 'logs' | 'nats' | 'stats'>) {
   const logger = logs.getLogger('comm-stats-controller')
@@ -16,6 +15,32 @@ export function setupCommsStatus({ logs, nats, stats }: Pick<BaseComponents, 'lo
   })
 
   nats.subscribe('client-proto.peer.*.heartbeat', (err, message) => {
+    if (err) {
+      logger.error(err)
+      return
+    }
+
+    const id = message.subject.split('.')[2]
+    const decodedMessage = Heartbeat.decode(message.data)
+    const position = decodedMessage.position!
+    stats.onPeerUpdated(id, {
+      address: id,
+      time: Date.now(),
+      ...position
+    })
+  })
+
+  nats.subscribe('archipelago.peer.*.disconnect', (err, message) => {
+    if (err) {
+      logger.error(err)
+      return
+    }
+
+    const id = message.subject.split('.')[2]
+    stats.onPeerDisconnected(id)
+  })
+
+  nats.subscribe('archipelago.peer.*.heartbeat', (err, message) => {
     if (err) {
       logger.error(err)
       return
