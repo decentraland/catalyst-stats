@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@dcl/catalyst-contracts": "^3.1.4",
-    "@dcl/protocol": "^1.0.0-4810686946.commit-7c034e3",
+    "@dcl/protocol": "^1.0.0-5048370069.commit-00abb1b",
     "@dcl/schemas": "^6.17.0",
     "@well-known-components/env-config-provider": "^1.1.1",
     "@well-known-components/http-server": "^1.1.6",
