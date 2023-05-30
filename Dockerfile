@@ -2,6 +2,8 @@ ARG RUN
 
 FROM node:lts-alpine as builderenv
 
+RUN apk add --no-cache git
+
 WORKDIR /app
 
 # We use Tini to handle signals and PID1 (https://github.com/krallin/tini, read why here https://github.com/krallin/tini/issues/8)
