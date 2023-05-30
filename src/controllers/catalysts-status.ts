@@ -1,46 +1,28 @@
 import { BaseComponents, CatalystStatus, CatalystParcelsInfo } from '../types'
+import { getCatalystServersFromCache } from 'dcl-catalyst-client/dist/contracts-snapshots'
 
 const CATALYST_STATUS_EXPIRATION_TIME = 1000 * 60 * 15 // 15 mins
 
-export function setupCatalystStatus(components: Pick<BaseComponents, 'logs' | 'fetch' | 'contract' | 'stats'>) {
-  const { logs, fetch, contract, stats } = components
+export async function setupCatalystStatus(components: Pick<BaseComponents, 'logs' | 'fetch' | 'config' | 'stats'>) {
+  const { logs, fetch, config, stats } = components
 
+  const ethNetwork = (await config.getString('ETH_NETWORK')) ?? 'goerli'
   const logger = logs.getLogger('catalysts-status')
 
   async function fetchCatalystsStatus(): Promise<CatalystStatus[]> {
-    const count = (await contract.catalystCount()).toNumber()
-
-    const urls: string[] = []
-    for (let ix = 0; ix < count; ix++) {
-      const id = await contract.catalystIds(ix)
-      const { domain } = await contract.catalystById(id)
-
-      let baseUrl = domain.trim()
-
-      if (baseUrl.startsWith('http://')) {
-        logger.warn(`Catalyst node domain using http protocol, skipping ${baseUrl}`)
-        continue
-      }
-
-      if (!baseUrl.startsWith('https://')) {
-        baseUrl = 'https://' + baseUrl
-      }
-
-      urls.push(baseUrl)
-    }
-
+    const servers = getCatalystServersFromCache(ethNetwork as any)
     const result: CatalystStatus[] = []
     await Promise.all(
-      urls.map(async (baseUrl: string) => {
+      servers.map(async ({ address }) => {
         try {
-          const statusResponse = await fetch.fetch(`${baseUrl}/about`)
+          const statusResponse = await fetch.fetch(`${address}/about`)
           const data = await statusResponse.json()
 
           if (data && data.configurations) {
-            result.push({ baseUrl, name: data.configurations.realmName })
+            result.push({ baseUrl: address, name: data.configurations.realmName })
           }
         } catch (e: any) {
-          logger.warn(`Error fetching ${baseUrl}/about: ${e.toString()}`)
+          logger.warn(`Error fetching ${address}/about: ${e.toString()}`)
         }
       })
     )

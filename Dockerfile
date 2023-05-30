@@ -2,6 +2,8 @@ ARG RUN
 
 FROM node:lts-alpine as builderenv
 
+RUN apk add --no-cache git
+
 WORKDIR /app
 
 # We use Tini to handle signals and PID1 (https://github.com/krallin/tini, read why here https://github.com/krallin/tini/issues/8)
@@ -25,7 +27,7 @@ RUN yarn install --prod --frozen-lockfile
 ########################## END OF BUILD STAGE ##########################
 
 FROM node:lts-alpine
-
+RUN apk update && apk upgrade
 RUN apk add --no-cache tini
 
 # NODE_ENV is used to configure some runtime options, like JSON logger
