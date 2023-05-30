@@ -25,7 +25,7 @@ RUN yarn install --prod --frozen-lockfile
 ########################## END OF BUILD STAGE ##########################
 
 FROM node:lts-alpine
-
+RUN apk update && apk upgrade
 RUN apk add --no-cache tini
 
 # NODE_ENV is used to configure some runtime options, like JSON logger
