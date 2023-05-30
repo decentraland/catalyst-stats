@@ -1,11 +1,10 @@
-import { CatalystContract } from '@dcl/catalyst-contracts'
-import type { IFetchComponent } from '@well-known-components/http-server'
 import type {
   IConfigComponent,
   ILoggerComponent,
   IHttpServerComponent,
   IBaseComponent,
-  IMetricsComponent
+  IMetricsComponent,
+  IFetchComponent
 } from '@well-known-components/interfaces'
 import { metricDeclarations } from './metrics'
 import { INatsComponent } from '@well-known-components/nats-component/dist/types'
@@ -24,7 +23,6 @@ export type BaseComponents = {
   fetch: IFetchComponent
   metrics: IMetricsComponent<keyof typeof metricDeclarations>
   nats: INatsComponent
-  contract: CatalystContract
   content: IContentComponent
   stats: IStatsComponent
 }

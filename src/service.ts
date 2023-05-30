@@ -27,7 +27,7 @@ export async function main(program: Lifecycle.EntryPointParameters<AppComponents
 
   const { logs } = components
   setupCommsStatus(components)
-  const { updateParcels } = setupCatalystStatus(components)
+  const { updateParcels } = await setupCatalystStatus(components)
 
   await updateParcels()
   const logger = logs.getLogger('update parcel interval')
