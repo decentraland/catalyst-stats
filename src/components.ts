@@ -22,7 +22,7 @@ export async function initComponents(): Promise<AppComponents> {
   const serverOptions: Partial<IHttpServerOptions> = {
     cors: {
       origin: true,
-      methods: 'GET,HEAD,POST,PUT,DELETE,CONNECT,TRACE,PATCH',
+      methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'TRACE', 'PATCH'],
       allowedHeaders: ['Cache-Control', 'Content-Type', 'Origin', 'Accept', 'User-Agent', 'X-Upload-Origin'],
       credentials: true,
       maxAge: 86400
