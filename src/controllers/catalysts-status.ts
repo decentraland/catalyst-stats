@@ -6,11 +6,13 @@ const CATALYST_STATUS_EXPIRATION_TIME = 1000 * 60 * 15 // 15 mins
 export async function setupCatalystStatus(components: Pick<BaseComponents, 'logs' | 'fetch' | 'config' | 'stats'>) {
   const { logs, fetch, config, stats } = components
 
-  const ethNetwork = (await config.getString('ETH_NETWORK')) ?? 'goerli'
+  const ethNetwork = (await config.getString('ETH_NETWORK')) ?? 'sepolia'
   const logger = logs.getLogger('catalysts-status')
 
   async function fetchCatalystsStatus(): Promise<CatalystStatus[]> {
+    console.log(ethNetwork)
     const servers = getCatalystServersFromCache(ethNetwork as any)
+    console.log(servers)
     const result: CatalystStatus[] = []
     await Promise.all(
       servers.map(async ({ address }) => {
@@ -59,8 +61,9 @@ export async function setupCatalystStatus(components: Pick<BaseComponents, 'logs
       lastCatalystsStatus = await fetchCatalystsStatus()
       lastCatalystsStatusTime = Date.now()
     }
-
+    console.log(lastCatalystsStatus)
     lastParcels = await fetchParcels(lastCatalystsStatus)
+    console.log(lastParcels)
     lastParcelsTime = Date.now()
 
     stats.onCatalystsParcelsInfo({ time: lastParcelsTime, info: lastParcels })
