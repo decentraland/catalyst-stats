@@ -17,7 +17,7 @@ export async function setupCatalystStatus(components: Pick<BaseComponents, 'logs
     await Promise.all(
       servers.map(async ({ address }) => {
         try {
-          const statusResponse = await fetch.fetch(`${address}/about`)
+          const statusResponse = await fetch.fetch(`${address}/about`, { attempts: 3, retryDelay: 1000 })
           const data = await statusResponse.json()
 
           if (data && data.configurations) {
