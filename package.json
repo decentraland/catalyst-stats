@@ -23,7 +23,6 @@
     "tabWidth": 2
   },
   "dependencies": {
-    "@dcl/catalyst-contracts": "^4.3.1",
     "@dcl/protocol": "^1.0.0-6725457366.commit-d6b2b77",
     "@dcl/schemas": "^9.9.0",
     "@well-known-components/env-config-provider": "^1.1.1",
