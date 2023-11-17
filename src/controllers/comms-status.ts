@@ -14,13 +14,13 @@ export function setupCommsStatus({ logs, nats, stats }: Pick<BaseComponents, 'lo
     stats.onPeerDisconnected(id)
   })
 
-  nats.subscribe('client-proto.peer.*.heartbeat', (err, message) => {
+  nats.subscribe('peer.*.heartbeat', (err, message) => {
     if (err) {
       logger.error(err)
       return
     }
 
-    const id = message.subject.split('.')[2]
+    const id = message.subject.split('.')[1]
     const decodedMessage = Heartbeat.decode(message.data)
     const position = decodedMessage.position!
     stats.onPeerUpdated(id, {
@@ -30,33 +30,7 @@ export function setupCommsStatus({ logs, nats, stats }: Pick<BaseComponents, 'lo
     })
   })
 
-  nats.subscribe('archipelago.peer.*.disconnect', (err, message) => {
-    if (err) {
-      logger.error(err)
-      return
-    }
-
-    const id = message.subject.split('.')[2]
-    stats.onPeerDisconnected(id)
-  })
-
-  nats.subscribe('archipelago.peer.*.heartbeat', (err, message) => {
-    if (err) {
-      logger.error(err)
-      return
-    }
-
-    const id = message.subject.split('.')[2]
-    const decodedMessage = Heartbeat.decode(message.data)
-    const position = decodedMessage.position!
-    stats.onPeerUpdated(id, {
-      address: id,
-      time: Date.now(),
-      ...position
-    })
-  })
-
-  nats.subscribe('archipelago.islands', (err, message) => {
+  nats.subscribe('engine.islands', (err, message) => {
     if (err) {
       logger.error(err)
       return
