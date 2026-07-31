@@ -345,7 +345,17 @@
   dependencies:
     "@dcl/ts-proto" "1.154.0"
 
-"@dcl/schemas@^9.0.0", "@dcl/schemas@^9.2.0", "@dcl/schemas@^9.9.0":
+"@dcl/schemas@^26.5.0":
+  version "26.5.0"
+  resolved "https://registry.yarnpkg.com/@dcl/schemas/-/schemas-26.5.0.tgz#58beee57bfa8ab15797aa8c54053cdebd4aa250a"
+  integrity sha512-R7/IXI3g4SFGsVKtsLzwUk7romfV9vxWtI0A7pbwlNEyfPtIVgdIqpgHAXD06vDTAyrEZAWMyzhHxcBEoIXniQ==
+  dependencies:
+    ajv "^8.11.0"
+    ajv-errors "^3.0.0"
+    ajv-keywords "^5.1.0"
+    mitt "^3.0.1"
+
+"@dcl/schemas@^9.0.0", "@dcl/schemas@^9.2.0":
   version "9.9.0"
   resolved "https://registry.yarnpkg.com/@dcl/schemas/-/schemas-9.9.0.tgz#868693b46ef3d64b166d095bb0405d5119de461a"
   integrity sha512-n7zgMWTHb0O8oqb4kfVJzuTi/R3qkp/BZTAqhS1BRtSeulVhEVAnpPd2R6nzW9gC9D0Wp1yzaMo53gUIAcHSDw==
@@ -2957,10 +2967,10 @@ minimatch@^3.0.4, minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
   dependencies:
     brace-expansion "^1.1.7"
 
-mitt@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/mitt/-/mitt-3.0.0.tgz#69ef9bd5c80ff6f57473e8d89326d01c414be0bd"
-  integrity sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==
+mitt@^3.0.0, mitt@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/mitt/-/mitt-3.0.1.tgz#ea36cf0cc30403601ae074c8f77b7092cdab36d1"
+  integrity sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==
 
 ms@2.1.2:
   version "2.1.2"
