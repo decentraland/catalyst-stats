@@ -338,12 +338,13 @@
   resolved "https://registry.yarnpkg.com/@dcl/hashing/-/hashing-3.0.4.tgz#4df2a4cb3a8114765aed34cb57b91c93bf33bfb3"
   integrity sha512-Cg+MoIOn+BYmQV2q8zSFnNYY+GldlnUazwBnfgrq3i66ZxOaZ65h01btd8OUtSAlfWG4VTNIOHDjtKqmuwJNBg==
 
-"@dcl/protocol@^1.0.0-6725457366.commit-d6b2b77":
-  version "1.0.0-6725457366.commit-d6b2b77"
-  resolved "https://registry.yarnpkg.com/@dcl/protocol/-/protocol-1.0.0-6725457366.commit-d6b2b77.tgz#099efecc58dc255f02db7d5efd84101732f21f06"
-  integrity sha512-hZQxkoBTsNamu6kpbRtT7QAg4yIa7qF/ZAsfDM3OR0KtbKxYtxsat5dQ2KnjUm6JEMefphonoL9PIR0wOJYrFA==
+"@dcl/protocol@^1.0.0-30343893778.commit-acf163a":
+  version "1.0.0-30343893778.commit-acf163a"
+  resolved "https://registry.yarnpkg.com/@dcl/protocol/-/protocol-1.0.0-30343893778.commit-acf163a.tgz#57e5c918de62accd025efde75e0f4129d26845a4"
+  integrity sha512-B5h7uIBWUUPrKZvvByBp22QeqGLjt8bLkPd7pNymkSiE2TuzSo8tCSVo7vaNKf5MzX+NixIdXd+akqz3uxXHmw==
   dependencies:
     "@dcl/ts-proto" "1.154.0"
+    protobufjs "7.2.4"
 
 "@dcl/schemas@^9.0.0", "@dcl/schemas@^9.2.0", "@dcl/schemas@^9.9.0":
   version "9.9.0"
@@ -3255,6 +3256,24 @@ prompts@^2.0.1:
   dependencies:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
+
+protobufjs@7.2.4:
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-7.2.4.tgz#3fc1ec0cdc89dd91aef9ba6037ba07408485c3ae"
+  integrity sha512-AT+RJgD2sH8phPmCf7OUZR8xGdcJRga4+1cOaXJ64hvcSkVhNcRHOwIxUatPH15+nj59WAGTDv3LSGZPEQbJaQ==
+  dependencies:
+    "@protobufjs/aspromise" "^1.1.2"
+    "@protobufjs/base64" "^1.1.2"
+    "@protobufjs/codegen" "^2.0.4"
+    "@protobufjs/eventemitter" "^1.1.0"
+    "@protobufjs/fetch" "^1.1.0"
+    "@protobufjs/float" "^1.0.2"
+    "@protobufjs/inquire" "^1.1.0"
+    "@protobufjs/path" "^1.1.2"
+    "@protobufjs/pool" "^1.1.0"
+    "@protobufjs/utf8" "^1.1.0"
+    "@types/node" ">=13.7.0"
+    long "^5.0.0"
 
 protobufjs@^6.11.3, protobufjs@^6.8.8:
   version "6.11.3"
