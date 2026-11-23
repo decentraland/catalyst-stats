@@ -58,6 +58,17 @@ describe('when calculating the thumbnail of a scene', () => {
     })
   })
 
+  describe('and the matching content file has an empty hash', () => {
+    beforeEach(() => {
+      scene.metadata.display.navmapThumbnail = 'thumbnail.png'
+      scene.content = [{ file: 'thumbnail.png', hash: '' }]
+    })
+
+    it('should return undefined', () => {
+      expect(content.calculateThumbnail(scene)).toBeUndefined()
+    })
+  })
+
   describe('and the navmap thumbnail is an absolute URL', () => {
     beforeEach(() => {
       scene.metadata.display.navmapThumbnail = 'https://images.example.com/thumbnail.png'
